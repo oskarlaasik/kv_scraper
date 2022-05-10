@@ -11,7 +11,6 @@ SQLALCHEMY_DATABASE_URI = 'postgresql://%s:%s@%s:%s/%s' % (postgres_user, postgr
 class Config:
     ENV = 'development'
     DEBUG = True
-    SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(24))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):

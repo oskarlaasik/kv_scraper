@@ -14,9 +14,10 @@ class Appartment(db.Model):
     utilities_winter = db.Column(db.Integer)
     square_meters = db.Column(db.Float)
     price = db.Column(db.Float)
+    square_foot_price = db.Column(db.Float)
 
     def __init__(self, num_rooms, floor, floors_in_building, build_year, condition,
-                 form_of_ownership, energy_efficiency, utilities_summer, utilities_winter, square_meters, price):
+                 form_of_ownership, energy_efficiency, utilities_summer, utilities_winter, square_meters, price, square_foot_price):
         self.num_rooms = num_rooms
         self.floor = floor
         self.floors_in_building = floors_in_building
@@ -28,6 +29,7 @@ class Appartment(db.Model):
         self.utilities_winter = utilities_winter
         self.square_meters = square_meters
         self.price = price
+        self.square_foot_price = square_foot_price
 
     @staticmethod
     def create(num_rooms, floor, floors_in_building, build_year, condition, form_of_ownership, energy_efficiency,

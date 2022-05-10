@@ -9,6 +9,6 @@ WORKDIR /opt/services/kv_scraper/src
 RUN pip install -r requirements.txt
 COPY . /opt/services/kv_scraper/src
 EXPOSE 5090
-CMD ["python", "kv_scraper.py"]
+CMD ["python", "server.py"]
 
 
