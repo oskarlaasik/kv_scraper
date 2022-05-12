@@ -67,7 +67,7 @@ def resolve_apartment_view(response, apartment, price):
             elif row_key == 'Ehitusaasta':
                 apartment_stats['build_year'] = int(row_value)
 
-    apartment.create(num_rooms=apartment_stats.get('num_rooms'),
+    Apartment.create(num_rooms=apartment_stats.get('num_rooms'),
                      square_meters=apartment_stats.get('square_meters'),
                      floor=apartment_stats.get('floor'),
                      floors_in_building=apartment_stats.get('floors_in_building'),
@@ -124,7 +124,7 @@ def scrape_kv():
     app = init_app()
     with app.app_context():
         # start with empty database
-        apartment.query.delete()
+        Apartment.query.delete()
         Broker.query.delete()
         resolve_menu_view(start_url)
     print('All Done')
