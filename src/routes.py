@@ -1,11 +1,11 @@
 from flask import Blueprint, jsonify, request, render_template
 from sqlalchemy import func
-from sqlalchemy.orm import aliased
 
 from src import db
 from src.models import Apartment, Broker
 
 api_bp = Blueprint('api', __name__)
+
 
 def parse_page_size(query_parameters):
     page_num = query_parameters.get('page_num')
@@ -27,6 +27,7 @@ def parse_page_size(query_parameters):
         page_size = 100
     return page_num, page_size
 
+
 @api_bp.route('/api')
 def api():
     return render_template('documentation.html')
@@ -36,7 +37,7 @@ def api():
 def apartments():
     page_num, page_size = parse_page_size(request.args)
 
-    results = apartment.query.paginate(page_num, page_size).items
+    results = Apartment.query.paginate(page_num, page_size).items
     results = [{'num_rooms': i.num_rooms,
                 'price': i.price,
                 'address': i.address,
@@ -77,9 +78,9 @@ def brokers_arrange():
 
     page_num, page_size = parse_page_size(request.args)
 
-    avg_meter_price = func.avg(apartment.square_meter_price)
+    avg_meter_price = func.avg(Apartment.square_meter_price)
     result = db.session.query(avg_meter_price, Broker.id, Broker.name, Broker.company).filter(
-        apartment.broker_id == Broker.id).group_by(Broker.id)
+        Apartment.broker_id == Broker.id).group_by(Broker.id)
 
     if arrange == 'desc':
         result = result.order_by(avg_meter_price.desc())
