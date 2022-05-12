@@ -5,3 +5,7 @@ Flask-WTF==1.0.1
 pytest==7.1.2
 requests==2.27.1
 beautifulsoup4==4.11.1
+geopy==2.2.0
+tqdm==4.64.0
+lxml==4.8.0
+requests_futures==1.0.0

@@ -5,7 +5,6 @@ postgres_pwd = os.environ['POSTGRES_PASSWORD']
 postgres_db = os.environ['POSTGRES_DB']
 host = 'db'
 port = '5432'
-test_db_port = '5433'
 SQLALCHEMY_DATABASE_URI = 'postgresql://%s:%s@%s:%s/%s' % (postgres_user, postgres_pwd, host, port, postgres_db)
 
 class Config:

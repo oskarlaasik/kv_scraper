@@ -13,13 +13,12 @@ def init_app(test=False):
     app = Flask(__name__, instance_relative_config=False)
     if not test:
         app.config.from_object(DevelopmentConfig)  # configure app using the Config class defined in src/config.py
-        from src.models import Appartment
+        from src.models import Apartment, Broker
         db.init_app(app)  # initialise the database for the app
         with app.app_context():
             db.create_all()
     else:
         app.config.from_object(TestingConfig)  # configure app test config
-
 
     with app.app_context():
         from src.routes import api_bp

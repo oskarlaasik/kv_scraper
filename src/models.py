@@ -1,7 +1,7 @@
 from src import db
 
-#dict_keys(['Tube', 'Üldpind', 'Korrus/Korruseid', 'Ehitusaasta', 'Seisukord', 'Omandivorm', 'Katastrinumber', 'Energiamärgis', 'Kulud suvel/talvel', 'Kinnistu number', 'Korruseid'])
-class Appartment(db.Model):
+
+class Apartment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     num_rooms = db.Column(db.Integer)
     floor = db.Column(db.Integer)
@@ -9,15 +9,21 @@ class Appartment(db.Model):
     build_year = db.Column(db.Integer)
     condition = db.Column(db.String(256))
     form_of_ownership = db.Column(db.String(256))
-    energy_efficiency = (db.String(8))
+    energy_efficiency = db.Column(db.String(64))
     utilities_summer = db.Column(db.Integer)
     utilities_winter = db.Column(db.Integer)
     square_meters = db.Column(db.Float)
-    price = db.Column(db.Float)
-    square_foot_price = db.Column(db.Float)
+    square_meter_price = db.Column(db.Integer)
+    price = db.Column(db.Integer)
+    address = db.Column(db.String(256))
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+    broker_id = db.Column(db.Integer, db.ForeignKey('broker.id'))
+    kv_id = db.Column(db.Integer)
 
-    def __init__(self, num_rooms, floor, floors_in_building, build_year, condition,
-                 form_of_ownership, energy_efficiency, utilities_summer, utilities_winter, square_meters, price, square_foot_price):
+    def __init__(self, num_rooms, floor, floors_in_building, build_year, condition, form_of_ownership,
+                 energy_efficiency, utilities_summer, utilities_winter, square_meters, square_meter_price, price,
+                 longitude, latitude, address, broker_id, kv_id):
         self.num_rooms = num_rooms
         self.floor = floor
         self.floors_in_building = floors_in_building
@@ -28,18 +34,37 @@ class Appartment(db.Model):
         self.utilities_summer = utilities_summer
         self.utilities_winter = utilities_winter
         self.square_meters = square_meters
+        self.square_meter_price = square_meter_price
         self.price = price
-        self.square_foot_price = square_foot_price
+        self.address = address
+        self.longitude = longitude
+        self.latitude = latitude
+        self.broker_id = broker_id
+        self.kv_id = kv_id
 
     @staticmethod
     def create(num_rooms, floor, floors_in_building, build_year, condition, form_of_ownership, energy_efficiency,
-               utilities_in_summer, utilities_in_winter, square_meters, price):  # create new appartment
-        new_appartment = Appartment(num_rooms, floor, floors_in_building, build_year, condition, form_of_ownership, energy_efficiency,
-               utilities_in_summer, utilities_in_winter, square_meters, price)
-        db.session.add(new_appartment)
+               utilities_summer, utilities_winter, square_meters, square_meter_price, price, address, longitude,
+               latitude, broker_id, kv_id):  # create new apartment
+        new_apartment = Apartment(num_rooms, floor, floors_in_building, build_year, condition, form_of_ownership,
+                                  energy_efficiency, utilities_summer, utilities_winter, square_meters,
+                                  square_meter_price, price, longitude, latitude, address, broker_id, kv_id)
+        db.session.add(new_apartment)
         db.session.commit()
 
+
+class Broker(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256))
+    company = db.Column(db.String(256))
+    apartment = db.relationship('Apartment')
+
+    def __init__(self, name, company):
+        self.name = name
+        self.company = company
+
     @staticmethod
-    def get_all():  # return list of user details
-        return [{'product_id': i.id, 'name': i.name, 'stock': i.stock, 'price': i.price}
-                for i in Appartment.query.order_by('id').all()]
+    def create(name, company):  # create new broker
+        new_broker = Broker(name, company)
+        db.session.add(new_broker)
+        db.session.commit()
