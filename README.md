@@ -17,5 +17,5 @@ Navigate to http://localhost:8080/api to view the api documentation.
 
 Scraper can be activated
 ```
-docker exec [parent_folder_name]_kv_scraper-1 python server.py
+docker exec [parent_folder_name]_kv_scraper python server.py
 ```
