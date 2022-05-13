@@ -67,6 +67,9 @@ def resolve_apartment_view(response, apartment, price):
             elif row_key == 'Ehitusaasta':
                 apartment_stats['build_year'] = int(row_value)
 
+    if price and apartment_stats.get('square_meters'):
+        square_meter_price = int(price / apartment_stats.get('square_meters'))
+
     Apartment.create(num_rooms=apartment_stats.get('num_rooms'),
                      square_meters=apartment_stats.get('square_meters'),
                      floor=apartment_stats.get('floor'),
@@ -78,7 +81,7 @@ def resolve_apartment_view(response, apartment, price):
                      utilities_winter=apartment_stats.get('utilities_winter'),
                      build_year=apartment_stats.get('build_year'),
                      price=price,
-                     square_meter_price=int(price / apartment_stats.get('square_meters')),
+                     square_meter_price=square_meter_price,
                      broker_id=broker.id,
                      address=address,
                      longitude=longitude,
